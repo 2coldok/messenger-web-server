@@ -7,6 +7,7 @@ import 'express-async-errors';
 
 // Router
 import tweetsRouter from './router/tweets.js';
+import authRouter from './router/auth.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(morgan('tiny'));
 
 // 라우터 세팅
 app.use('/tweets', tweetsRouter);
+app.use('/auth', authRouter);
 
 // 정의되지 않은 api에 대한 처리
 app.use((req, res, next) => {
