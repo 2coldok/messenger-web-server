@@ -2,7 +2,7 @@ let tweets = [
   {
     id: '1',
     text: '몽상가 이찬웅',
-    createdAt: Date.now().toString(),
+    createdAt: new Date().toString(),
     name: '이찬웅',
     username: '나비',
     url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
@@ -10,14 +10,14 @@ let tweets = [
   {
     id: '2',
     text: '애니츠 첫번째 남자 젠더락 스트라이커',
-    createdAt: Date.now().toString(),
+    createdAt: new Date().toString(),
     name: '한병학',
     username: '호랑나비',
   },
   {
     id: '3',
     text: '로스트아크 유일한 칼잡이 버서커',
-    createdAt: Date.now().toString(),
+    createdAt: new Date().toString(),
     name: '최병학',
     username: '칼나비',
   }

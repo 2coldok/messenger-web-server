@@ -5,7 +5,7 @@ import * as userRepository from '../data/auth.js'
 
 // Todo
 const jwtSecretKey = 'fvkdfskmlhntkgkj3fnj8';
-const jwtExpiresInDays = '2d';
+const jwtExpiresInDays = '2d'; // 숫자부여시 초단위, 2d(이틀) 부여할려고 할 시 문자열로 전달 '2d'
 const bcryptSaltRounds = 12;
 
 export async function signup(req, res) {
@@ -32,13 +32,22 @@ export async function login(req, res) {
   if (!user) {
     return res.status(401).json({ message: 'username이 db에 없어요' });
   }
+  
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword) {
     return res.status(401).json({ message: '비밀번호가 틀렸어요' });
   }
+
   const token = createJwtToken(user.id);
   res.status(200).json({ token, username });
-  
+}
+ 
+export async function me(req, res ) {
+  const user = await userRepository.findById(req.userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  res.status(200).json({ token: req.token, username: user.username });
 }
 
 function createJwtToken(id) {
