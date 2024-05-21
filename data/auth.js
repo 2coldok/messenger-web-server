@@ -37,8 +37,6 @@ export async function createUser(user) {
   const created = { ...user, id: Date.now().toString() };
   users.push(created);
 
-  console.log(users);
-
   return created.id;
 }
 
