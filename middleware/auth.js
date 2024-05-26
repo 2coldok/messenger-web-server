@@ -22,7 +22,7 @@ export const isAuth = async (req, res, next) => {
       return res.status(401).json({ message: 'auth2 에러'});
     }
     
-    req.userId = user.id;
+    req.userId = user.userId;
     req.token = token;
     next();
   });

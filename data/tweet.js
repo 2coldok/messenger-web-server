@@ -1,62 +1,69 @@
+import * as userRepository from './auth.js';
+
 let tweets = [
   {
-    id: '1',
+    tweetId: '1004',
     text: '몽상가 이찬웅',
     createdAt: new Date().toString(),
-    name: '이찬웅',
-    username: '나비',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
+    userId: '1',
   },
   {
-    id: '2',
+    tweetId: '1253',
     text: '애니츠 첫번째 남자 젠더락 스트라이커',
     createdAt: new Date().toString(),
-    name: '한병학',
-    username: '호랑나비',
+    userId: '2',
   },
   {
-    id: '3',
+    tweetId: '7979',
     text: '로스트아크 유일한 칼잡이 버서커',
     createdAt: new Date().toString(),
-    name: '최병학',
-    username: '칼나비',
+    userId: '3',
   }
 ];
 
 export async function all() {
-  return tweets;
+  return Promise.all(tweets.map(async (tweet) => {
+    const { username, name, url } = await userRepository.findById(tweet.userId);
+
+    return { ...tweet, username, name, url };
+  }))
 }
 
 export async function findByUsername(username) {
-  return tweets.filter((tweet) => tweet.username === username);
+  return all().then((tweets) => tweets.filter((tweet) => tweet.username === username));
 }
 
-export async function findById(id) {
-  return tweets.find((tweet) => tweet.id === id);
+export async function findById(tweetId) {
+  const found = tweets.find((tweet) => tweet.tweetId === tweetId);
+  if (!found) {
+    return null;
+  }
+
+  const { username, name, url } = await userRepository.findById(found.userId);
+  return { ...found, username, name, url };
 }
 
-export async function create(text, name, username) {
+export async function create(text, userId) {
    const tweet = {
-    id: Date.now().toString(),
+    tweetId: Date.now().toString(),
     text,
     createdAt: new Date().toString(),
-    name,
-    username,
+    userId,
   };
   tweets = [tweet, ...tweets];
 
-  return tweet;
+  return findById(tweet.tweetId);
 }
 
-export async function update(id, text) {
-  const tweet = tweets.find((tweet) => tweet.id === id);
+export async function update(tweetId, text) {
+  const tweet = tweets.find((tweet) => tweet.tweetId === tweetId);
   if (tweet) {
     tweet.text = text;
   }
   
-  return tweet;
+  return findById(tweet.tweetId);
 }
 
-export async function remove(id) {
-  tweets = tweets.filter((tweet) => tweet.id !== id);
+export async function remove(tweetId) {
+  tweets = tweets.filter((tweet) => tweet.tweetId !== tweetId);
 }

@@ -15,6 +15,7 @@ export async function signup(req, res) {
     return res.status(409).json({ message: `${username} 라는 username이 이미 존재합니다` });
   }
   const hashed = await bcrypt.hash(password, bcryptSaltRounds);
+  
   const userId = await userRepository.createUser({
     username,
     password: hashed,
@@ -38,7 +39,7 @@ export async function login(req, res) {
     return res.status(401).json({ message: '비밀번호가 틀렸어요' });
   }
 
-  const token = createJwtToken(user.id);
+  const token = createJwtToken(user.userId);
   res.status(200).json({ token, username });
 }
  

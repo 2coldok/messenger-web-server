@@ -25,16 +25,16 @@ export async function getTweet(req, res) {
 }
 
 export async function createTweet(req, res) {
-  const { text, name, username } = req.body;
-  const tweet = await tweetRepository.create(text, name, username);
+  const { text, userId } = req.body;
+  const tweet = await tweetRepository.create(text, userId);
 
   res.status(201).json(tweet);
 }
 
 export async function updateTweet(req, res) {
-  const id = req.params.id;
+  const tweetId = req.params.id;
   const text = req.body.text;
-  const tweet = await tweetRepository.update(id, text);
+  const tweet = await tweetRepository.update(tweetId, text);
   
   if (tweet) {
     res.status(200).json(tweet);
