@@ -39,18 +39,16 @@ export async function login(req, res) {
     return res.status(401).json({ message: '비밀번호가 틀렸어요' });
   }
 
-  const token = createJwtToken(user.userId);
+  const token = createJwtToken(user.userId); // stateless 임으로 로그인할때마다 고유한 userId를 이용해 새로운 토큰 발행
   res.status(200).json({ token, username });
 }
  
 export async function me(req, res ) {
-  const user = await userRepository.findById(req.userId);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
+  const user = await userRepository.findById(req.userId); // isAuth에서 검증해서 user가 db에 있는지 안찾아봐도 됨
+  
   res.status(200).json({ token: req.token, username: user.username });
 }
 
-function createJwtToken(id) {
-  return JWT.sign({ id }, jwtSecretKey, { expiresIn: jwtExpiresInDays });
+function createJwtToken(userId) {
+  return JWT.sign({ userId }, jwtSecretKey, { expiresIn: jwtExpiresInDays });
 }

@@ -11,7 +11,7 @@ const validateTweet = [
   body("text")
     .trim()
     .isLength({ min: 3 })
-    .withMessage("text는 최소 3글자 이상"),
+    .withMessage("text는 최소 3글자 이상 작성해주세요."),
   validate,  
 ];
 

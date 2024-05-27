@@ -5,22 +5,22 @@ export async function getTweets(req, res) {
   const data = await(username 
     ? tweetRepository.findByUsername(username)
     : tweetRepository.all());
-
+  
   if (data) {
     res.status(200).json(data);
   } else {
-    res.status(404).json({ message: `Tweets Not Found` });
+    res.status(404).json({ message: `Tweets 가 존재하지 않습니다.` });
   }
 }
 
 export async function getTweet(req, res) {
-  const id = req.params.id;
-  const tweet = await tweetRepository.findById(id);
+  const tweetId = req.params.id;
+  const tweet = await tweetRepository.findById(tweetId);
 
   if (tweet) {
     res.status(200).json(tweet);
   } else {
-    res.status(404).json({ message: `Tweet Id Not Found` });
+    res.status(404).json({ message: `유호하지 않은 Tweet Id 입니다.` });
   }
 }
 
@@ -39,13 +39,13 @@ export async function updateTweet(req, res) {
   if (tweet) {
     res.status(200).json(tweet);
   } else {
-    res.status(404).json({ message: `Tweet Id Not Found` });
+    res.status(404).json({ message: `존재하지 않는 Tweet Id 입니다.` });
   }
 }
 
 export async function deleteTweet(req, res) {
-  const id = req.params.id;
-  await tweetRepository.remove(id);
+  const tweetId = req.params.id;
+  await tweetRepository.remove(tweetId);
 
   res.sendStatus(204);
 }

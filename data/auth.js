@@ -38,8 +38,8 @@ export async function createUser(user) {
   const created = { ...user, userId: Date.now().toString() };
   users.push(created);
 
-  console.log(created);
-  console.log(created.userId);
+  // console.log(created);
+  // console.log(created.userId);
 
   return created.userId;
 }

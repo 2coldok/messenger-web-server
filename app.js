@@ -25,13 +25,15 @@ app.use('/auth', authRouter);
 
 // 정의되지 않은 api에 대한 처리
 app.use((req, res, next) => {
-  res.sendStatus(404);
+  // res.sendStatus(404);
+  res.status(404).json({ message: '정의 되지 않은 api 요청입니다.'});
 });
 
 // 서버 오류에 대한 처리
 app.use((error, req, res, next) => {
   console.error(error);
-  res.sendStatus(500);
+  // res.sendStatus(500);
+  res.status(500).json({ message: '서버 오류' });
 });
 
 app.listen(8080);
