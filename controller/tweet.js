@@ -34,18 +34,29 @@ export async function createTweet(req, res) {
 export async function updateTweet(req, res) {
   const tweetId = req.params.id;
   const text = req.body.text;
-  const tweet = await tweetRepository.update(tweetId, text);
+  const tweet = await tweetRepository.findById(tweetId);
   
-  if (tweet) {
-    res.status(200).json(tweet);
-  } else {
-    res.status(404).json({ message: `존재하지 않는 Tweet Id 입니다.` });
+  if (!tweet) {
+    return res.status(404).json({ message: `존재하지 않는 Tweet Id 입니다.` });
   }
+  if (tweet.userId !== req.userId) {
+    return res.status(403).json({ message: 'Tweet의 작성자가 아닙니다.' });
+  }
+
+  const updatedTweet = await tweetRepository.update(tweetId, text);
+  res.status(200).json(updatedTweet);
 }
 
 export async function deleteTweet(req, res) {
   const tweetId = req.params.id;
-  await tweetRepository.remove(tweetId);
+  const tweet = await tweetRepository.findById(tweetId);
+  if (!tweet) {
+    return res.status(404).json({ message: '존재하지 않는 Tweet Id 입니다.' });
+  }
+  if (tweet.userId !== req.userId) {
+    return res.status(403).json({ message: 'Tweet의 작성자가 아닙니다.' });
+  }
 
+  await tweetRepository.remove(tweetId);
   res.sendStatus(204);
 }
