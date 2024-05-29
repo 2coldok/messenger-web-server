@@ -12,7 +12,7 @@
 401, { message: `인증 오류: 유효하지 않은 토큰임` }   
 401, { message: `인증 오류: db에 토큰 소유자의 userId가 존재하지 않음` }   
 ```
-토큰에서 userId를 췌취해서 토큰과 함께 req에 실어서 next() 함.   
+토큰에서 userId를 채취해서 토큰과 함께 req에 실어서 next() 함.   
 req.userId = user.userId;   
 req.token = token;   
 
@@ -68,8 +68,9 @@ isAuth 미들웨어로 부터 생성된 req.userId를 통해 수정하려는 twe
     
 ## [POST /tweets] router.post("/", isAuth, validateTweet, tweetController.createTweet);
 - 성공    
-const { text, userId } = req.body 를 통해 Tweet 데이터를 생성하여 추가하고, 이후 tweet관련 구체적인 정보를 반환한다.(201)    
-이는 Tweet 데이터에 username, name, url 정보를 추가하여 구성되었다.    
+const { text } = req.body 와 isAuth 미들웨를 통해 전달된 req.userId를 통해 Tweet 데이터를 생성하여 추가하고,   
+이후 tweet관련 구체적인 정보를 반환한다.(201)    
+이는 Tweet 데이터에 username, name, url 정보를 추가하여 구성되었다.   
 ```zsh
 {
   tweetId: '새로 생성된 트윗 아이디',
