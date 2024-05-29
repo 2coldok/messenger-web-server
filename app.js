@@ -9,6 +9,8 @@ import 'express-async-errors';
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 
+import { config } from './config.js';
+
 const app = express();
 
 // 미들웨어 세팅
@@ -36,4 +38,4 @@ app.use((error, req, res, next) => {
   res.status(500).json({ message: '서버 오류' });
 });
 
-app.listen(8080);
+app.listen(config.host.port);
