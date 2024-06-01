@@ -39,7 +39,6 @@ app.use((error, req, res, next) => {
   res.status(500).json({ message: '서버 오류' });
 });
 
-connectDB().then((db) => {
-  console.log(db);
+connectDB().then(() => {
   app.listen(config.host.port);
 }).catch(console.error)
