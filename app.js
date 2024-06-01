@@ -10,6 +10,7 @@ import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 
 import { config } from './config.js';
+import { connectDB } from './database/database.js';
 
 const app = express();
 
@@ -38,4 +39,7 @@ app.use((error, req, res, next) => {
   res.status(500).json({ message: '서버 오류' });
 });
 
-app.listen(config.host.port);
+connectDB().then((db) => {
+  console.log(db);
+  app.listen(config.host.port);
+}).catch(console.error)
