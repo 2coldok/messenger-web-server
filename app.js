@@ -40,5 +40,6 @@ app.use((error, req, res, next) => {
 });
 
 connectDB().then(() => {
+  console.log('몽구스 연결 성공');
   app.listen(config.host.port);
-}).catch(console.error)
+}).catch(console.error);

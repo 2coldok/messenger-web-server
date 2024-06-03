@@ -1,20 +1,27 @@
-import { MongoClient } from 'mongodb';
+import Mongoose from 'mongoose';
 import { config } from '../config.js';
 
-const client = new MongoClient(config.db.host);
-let db;
-
 export async function connectDB() {
-  try {
-    const connectedClient = await client.connect();
-    console.log('MongoDB 연결 성공');
-    db = connectedClient.db();
-
-  } catch (error) {
-    console.log(`MongoDB 연결 실패 : ${error}`);
-  }
+  return Mongoose.connect(config.db.host);
 }
 
+export function useVirtualId(schema) {
+  schema.virtual('id').get(function() {
+    return this._id.toString();
+  });
+
+  const transform = (doc, ret) => {
+    ret.id = ret._id.toString();
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  };
+  
+  schema.set('toJSON', { virtuals: true, transform });
+  schema.set('toObject', { virtuals: true, transform });
+}
+
+let db;
 // users collection 
 export function getUsers() {
   return db.collection('users');

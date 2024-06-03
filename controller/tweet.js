@@ -6,7 +6,7 @@ export async function getTweets(req, res) {
     ? tweetRepository.findByUsername(username)
     : tweetRepository.all());
   
-  if (data) {
+  if (data.length !== 0) {
     res.status(200).json(data);
   } else {
     res.status(404).json({ message: `Tweets 가 존재하지 않습니다.` });
@@ -40,7 +40,10 @@ export async function updateTweet(req, res) {
   if (!tweet) {
     return res.status(404).json({ message: `존재하지 않는 Tweet Id 입니다.` });
   }
-  if (tweet.userId !== req.userId) {
+  // console.log(tweet.user._id.toString());
+  // console.log(req.userId);
+  
+  if (tweet.user.id !== req.userId) {
     return res.status(403).json({ message: 'Tweet의 작성자가 아닙니다.' });
   }
 
@@ -54,7 +57,7 @@ export async function deleteTweet(req, res) {
   if (!tweet) {
     return res.status(404).json({ message: '존재하지 않는 Tweet Id 입니다.' });
   }
-  if (tweet.userId !== req.userId) {
+  if (tweet.user.id !== req.userId) {
     return res.status(403).json({ message: 'Tweet의 작성자가 아닙니다.' });
   }
 

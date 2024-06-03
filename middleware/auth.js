@@ -23,7 +23,8 @@ export const isAuth = async (req, res, next) => {
       return res.status(401).json({ message: '인증 오류: db에 토큰 소유자의 userId가 존재하지 않음'});
     }
     
-    req.userId = user.userId;
+    // req.userId = user.id;
+    req.userId = decode.userId;
     req.token = token;
     next();
   });

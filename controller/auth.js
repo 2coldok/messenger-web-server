@@ -30,6 +30,7 @@ export async function signup(req, res) {
 export async function login(req, res) {
   const { username, password } = req.body;
   const user = await userRepository.findByUserName(username);
+  
   if (!user) {
     return res.status(401).json({ message: 'username이 db에 없어요' });
   }
@@ -38,11 +39,11 @@ export async function login(req, res) {
   if (!isValidPassword) {
     return res.status(401).json({ message: '비밀번호가 틀렸어요' });
   }
-
-  const token = createJwtToken(user.userId); // stateless 임으로 로그인할때마다 고유한 userId를 이용해 새로운 토큰 발행
+  
+  const token = createJwtToken(user.id); // stateless 임으로 로그인할때마다 고유한 userId를 이용해 새로운 토큰 발행
   res.status(200).json({ token, username });
 }
- 
+
 export async function me(req, res ) {
   const user = await userRepository.findById(req.userId); // isAuth에서 검증해서 user가 db에 있는지 안찾아봐도 됨
   
